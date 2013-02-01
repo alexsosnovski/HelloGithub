@@ -1,4 +1,0 @@
-foo.bar.TestClass
-foo.bar.TestClassSecond
-foo.bar.TestClassThird
-
