@@ -60,4 +60,36 @@ public class ClassNameTest {
 		assertEquals("$", className.getWords()[0]);
 		assertEquals("Proxy1", className.getWords()[1]);
 	}
+	
+	@Test
+	public void testHashCode() {
+		ClassName className = new ClassName("foo.bar.$Proxy1");
+		assertEquals("$Proxy1".hashCode(), className.hashCode());
+		
+		className = new ClassName("SomeClass");
+		assertEquals("SomeClass".hashCode(), className.hashCode());
+	}
+	
+	@Test
+	public void testEquals() {
+		ClassName className1 = new ClassName("foo.bar.$Proxy1");
+		ClassName className2 = new ClassName("$Proxy1");
+		ClassName className3 = new ClassName("$Proxy2");
+		
+		assertFalse(className1.equals(null));
+		assertFalse(className1.equals("$Proxy1"));
+		assertTrue(className1.equals(className2));
+		assertFalse(className1.equals(className3));
+	}
+	
+	@Test
+	public void testCompareTo() {
+		ClassName className1 = new ClassName("foo.bar.$Proxy1");
+		ClassName className2 = new ClassName("$Proxy1");
+		ClassName className3 = new ClassName("$Proxy2");
+		
+		assertEquals(0, className1.compareTo(className2));
+		assertTrue(className1.compareTo(className3) < 0);
+		assertTrue(className3.compareTo(className2) > 0);
+	}
 }
