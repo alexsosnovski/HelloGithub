@@ -2,7 +2,7 @@ package org.dsf;
 
 import java.util.LinkedList;
 
-public class ClassName implements Comparable<ClassName> {
+class ClassName implements Comparable<ClassName> {
 	private String className;
 	private LinkedList<String> words = new LinkedList<>();
 	
@@ -47,11 +47,8 @@ public class ClassName implements Comparable<ClassName> {
 		return this.className.equals(((ClassName) o).className);
 	}
 
-	public String getClassName() {
-		return className;
-	}
-
-	public String[] getWords() {
+	/** This method is intended for unit tests */
+	protected String[] getWords() {
 		return words.toArray(new String[words.size()]);
 	}
 }

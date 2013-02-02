@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -21,9 +22,9 @@ public class ClassFinderBasicTest {
 		Collection<String> result = classFinder.findMatching("T");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(3, arr.length);
-		assertEquals("foo.bar.TestClass", arr[0]);
-		assertEquals("foo.bar.TestClassSecond", arr[1]);
-		assertEquals("foo.bar.TestClassThird", arr[2]);
+		assertEquals("TestClass", arr[0]);
+		assertEquals("TestClassSecond", arr[1]);
+		assertEquals("TestClassThird", arr[2]);
 	}
 	
 	@Test
@@ -31,9 +32,9 @@ public class ClassFinderBasicTest {
 		Collection<String> result = classFinder.findMatching("TC");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(3, arr.length);
-		assertEquals("foo.bar.TestClass", arr[0]);
-		assertEquals("foo.bar.TestClassSecond", arr[1]);
-		assertEquals("foo.bar.TestClassThird", arr[2]);
+		assertEquals("TestClass", arr[0]);
+		assertEquals("TestClassSecond", arr[1]);
+		assertEquals("TestClassThird", arr[2]);
 	}
 	
 	@Test
@@ -41,9 +42,9 @@ public class ClassFinderBasicTest {
 		Collection<String> result = classFinder.findMatching("TeCla");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(3, arr.length);
-		assertEquals("foo.bar.TestClass", arr[0]);
-		assertEquals("foo.bar.TestClassSecond", arr[1]);
-		assertEquals("foo.bar.TestClassThird", arr[2]);
+		assertEquals("TestClass", arr[0]);
+		assertEquals("TestClassSecond", arr[1]);
+		assertEquals("TestClassThird", arr[2]);
 	}
 	
 	@Test
@@ -58,9 +59,28 @@ public class ClassFinderBasicTest {
 		Collection<String> result = classFinder.findMatching("TC ");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(1, arr.length);
-		assertEquals("foo.bar.TestClass", arr[0]);
+		assertEquals("TestClass", arr[0]);
 	}
 	
+	@Test
+	private void basicWildcardInBetween() {
+		Collection<String> result = classFinder.findMatching("F*B");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(2, arr.length);
+		assertEquals("FooBar", arr[0]);
+		assertEquals("FooBarBaz", arr[1]);
+	}
+	
+	@Test
+	private void basicLeadingWildcard() {
+		Collection<String> result = classFinder.findMatching("*B");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(2, arr.length);
+		assertEquals("FooBar", arr[0]);
+		assertEquals("FooBarBaz", arr[0]);
+	}
+	
+	@Ignore
 	@Test
 	private void advancedTrailingWhitespaceNoResult() {
 		Collection<String> result = classFinder.findMatching("TCl ");
@@ -68,28 +88,31 @@ public class ClassFinderBasicTest {
 		assertEquals(0, arr.length);
 	}
 	
+	@Ignore
 	@Test
 	private void advancedLowercaseChars() {
 		Collection<String> result = classFinder.findMatching("tct");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(1, arr.length);
-		assertEquals("foo.bar.TestClassThird", arr[0]);
+		assertEquals("TestClassThird", arr[0]);
 	}
 	
+	@Ignore
 	@Test
 	private void advancedLowercaseCharInBetween() {
 		Collection<String> result = classFinder.findMatching("TcT");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(1, arr.length);
-		assertEquals("foo.bar.TestClassThird", arr[0]);
+		assertEquals("TestClassThird", arr[0]);
 	}
 	
+	@Ignore
 	@Test
 	private void advancedLowercaseCharsNoResult() {
 		Collection<String> result = classFinder.findMatching("tct ");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(1, arr.length);
-		assertEquals("foo.bar.TestClassThird", arr[0]);
+		assertEquals("TestClassThird", arr[0]);
 	}
 	
 	@Before

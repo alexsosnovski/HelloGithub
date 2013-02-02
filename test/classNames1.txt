@@ -1,3 +1,6 @@
 foo.bar.TestClass
 foo.bar.TestClassSecond
 foo.bar.TestClassThird
+
+foo.bar.FooBar
+foo.bar.FooBarBaz
