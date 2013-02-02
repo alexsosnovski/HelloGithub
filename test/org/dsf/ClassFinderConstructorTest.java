@@ -13,6 +13,11 @@ import static org.junit.Assert.*;
 public class ClassFinderConstructorTest {
 	final String encoding = ClassFinder.SUPPORTED_ENCODING;
 	
+	@Test(expected = NullPointerException.class)
+	public void testNullArgument() {
+		new ClassFinder(null);
+	}
+	
 	@Test
 	public void testEmptyStream() throws Exception {
 		InputStream in = new ByteArrayInputStream("".getBytes(encoding));
@@ -83,5 +88,14 @@ public class ClassFinderConstructorTest {
 		ClassFinder finder = new ClassFinder(in);
 		assertEquals(1, finder.getClasses().length);
 		assertEquals("МойÜberКласс", finder.getClasses()[0].toString());
+	}
+	
+	@Test
+	public void testDuplicateClassesNotIgnored() throws Exception {
+		InputStream in = new ByteArrayInputStream("my.MyClass\nmy.MyClass".getBytes(encoding));
+		ClassFinder finder = new ClassFinder(in);
+		assertEquals(2, finder.getClasses().length);
+		assertEquals("MyClass", finder.getClasses()[0].toString());
+		assertEquals("MyClass", finder.getClasses()[1].toString());
 	}
 }

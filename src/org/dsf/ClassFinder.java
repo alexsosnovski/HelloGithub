@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,6 +18,8 @@ public class ClassFinder {
 	 * will be used to decode bytes into characters. This method DOES NOT perform any validation.
 	 * Whitespaces, tabs and carriage return symbols will be totally ignored. 
 	 * Class names should be separated by '\n' symbols. "Empty lines" will be ignored.
+	 * 
+	 * @param classNamesStream should not be null.
 	 * 
 	 * @throws RuntimeException if some error occurs.
 	 */
@@ -50,7 +53,25 @@ public class ClassFinder {
 	}
 
 	public Collection<String> findMatching(String pattern) {
-		return new LinkedList<>();
+		if (pattern == null) {
+			throw new IllegalArgumentException("Pattern should not be null!");
+		}
+		
+		LinkedList<String> result = new LinkedList<>();
+		
+		if (pattern.trim().length() == 0) {
+			return result;
+		}
+		
+		for (ClassName className : classes) {
+			if (className.matches(pattern, 0, 0)) {
+				result.add(className.toString());
+			}
+		}
+		
+		Collections.sort(result);
+		
+		return result;
 	}
 	
 	/** This method is intended for unit tests */

@@ -1,10 +1,10 @@
 package org.dsf;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 class ClassName implements Comparable<ClassName> {
 	private String className;
-	private LinkedList<String> words = new LinkedList<>();
+	private ArrayList<String> words = new ArrayList<>();
 	
 	public ClassName(String qualifiedName) {
 		int idx = qualifiedName.lastIndexOf('.');
@@ -14,13 +14,17 @@ class ClassName implements Comparable<ClassName> {
 		int startIdx = 0;
 		
 		for (int endIdx = 1; endIdx < chars.length; endIdx++) {
-			if (chars[endIdx] >= (int) 'A' && chars[endIdx] <= (int) 'Z') {
+			if (Character.isUpperCase(chars[endIdx])) {
 				words.add(className.substring(startIdx, endIdx));
 				startIdx = endIdx;
 			}
 		}
 		
 		words.add(className.substring(startIdx));
+	}
+	
+	public boolean matches(String pattern, int wordIdx, int offset) {
+		return true;
 	}
 	
 	@Override
@@ -48,7 +52,7 @@ class ClassName implements Comparable<ClassName> {
 	}
 
 	/** This method is intended for unit tests */
-	protected String[] getWords() {
+	protected String[] getWordsArr() {
 		return words.toArray(new String[words.size()]);
 	}
 }
