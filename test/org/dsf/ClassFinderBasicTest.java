@@ -93,6 +93,44 @@ public class ClassFinderBasicTest {
 	}
 	
 	@Test
+	public void basicLeadingWildcard() {
+		Collection<String> result = classFinder.findMatching("*B");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(2, arr.length);
+		assertEquals("FooBar", arr[0]);
+		assertEquals("FooBarBaz", arr[0]);
+	}
+	
+	@Test
+	public void multipleLeadingWildcard() {
+		Collection<String> result = classFinder.findMatching("***B");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(2, arr.length);
+		assertEquals("FooBar", arr[0]);
+		assertEquals("FooBarBaz", arr[0]);
+	}
+	
+	@Test
+	public void basicTrailingWildcard() {
+		Collection<String> result = classFinder.findMatching("TC*");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(3, arr.length);
+		assertEquals("TestClass", arr[0]);
+		assertEquals("TestClassSecond", arr[1]);
+		assertEquals("TestClassThird", arr[2]);
+	}
+	
+	@Test
+	public void multipleTrailingWildcard() {
+		Collection<String> result = classFinder.findMatching("TC***");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(3, arr.length);
+		assertEquals("TestClass", arr[0]);
+		assertEquals("TestClassSecond", arr[1]);
+		assertEquals("TestClassThird", arr[2]);
+	}
+	
+	@Test
 	public void basicWildcardInBetween() {
 		Collection<String> result = classFinder.findMatching("M*P");
 		String[] arr = result.toArray(new String[result.size()]);
@@ -119,22 +157,11 @@ public class ClassFinderBasicTest {
 	}
 	
 	@Test
-	public void basicLeadingWildcard() {
-		Collection<String> result = classFinder.findMatching("*B");
+	public void basicMultipleWildcardInBetween() {
+		Collection<String> result = classFinder.findMatching("M*****SP");
 		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(2, arr.length);
-		assertEquals("FooBar", arr[0]);
-		assertEquals("FooBarBaz", arr[0]);
-	}
-	
-	@Test
-	public void basicTrailingWildcard() {
-		Collection<String> result = classFinder.findMatching("TC*");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(3, arr.length);
-		assertEquals("TestClass", arr[0]);
-		assertEquals("TestClassSecond", arr[1]);
-		assertEquals("TestClassThird", arr[2]);
+		assertEquals(1, arr.length);
+		assertEquals("MySuperPrecious", arr[0]);
 	}
 	
 	@Test

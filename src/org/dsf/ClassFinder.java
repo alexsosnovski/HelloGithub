@@ -64,7 +64,7 @@ public class ClassFinder {
 		}
 		
 		for (ClassName className : classes) {
-			if (className.matches(pattern, 0, 0)) {
+			if (className.matches(pattern)) {
 				result.add(className.toString());
 			}
 		}

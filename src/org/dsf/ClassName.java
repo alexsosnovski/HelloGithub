@@ -23,7 +23,27 @@ class ClassName implements Comparable<ClassName> {
 		words.add(className.substring(startIdx));
 	}
 	
-	public boolean matches(String pattern, int wordIdx, int offset) {
+	public boolean matches(String pattern) {
+		StringBuilder buff = new StringBuilder();
+		boolean wildcardCopied = false;
+		
+		for (char c : pattern.toCharArray()) {
+			if (c == '*') {
+				if (wildcardCopied) {
+					continue;
+				} else {
+					buff.append(c);
+					wildcardCopied = true;
+				}
+			} else {
+				wildcardCopied = false;
+			}
+		}
+		
+		return this.matches(pattern, 0, 0);
+	}
+	
+	protected boolean matches(String pattern, int wordIdx, int offset) {
 		if (wordIdx >= words.size()) { //if class needs to have more words to match
 			return false;
 		}
@@ -38,28 +58,11 @@ class ClassName implements Comparable<ClassName> {
 			return true;
 		}
 		
-		if (Character.isUpperCase(pattern.charAt(0))) { //if current word matches
+		//TODO: it's just for tests, remove later
+		if (Character.isUpperCase(pattern.charAt(0))) {
 			if (offset > 0) {
 				System.err.println("Offset > 0!!! Pattern: " + pattern + "; wordIdx: " + wordIdx + 
 						"; offset: " + offset + "; words: " + words);
-			}
-			
-			if (pattern.charAt(0) == word.charAt(offset)) {
-				if (pattern.length() == 1) { //matched last symbol of the pattern
-					return true;
-				}
-				
-				if (Character.isUpperCase(pattern.charAt(1))) {
-					return this.matches(pattern.substring(1), wordIdx + 1, 0);
-				} 
-				
-				if (pattern.charAt(1) == ' ') { //if current word should be the last
-					return isLastWord(wordIdx);
-				}
-				
-				return this.matches(pattern.substring(1), wordIdx, offset + 1);
-			} else {
-				return false;
 			}
 		} 
 		
@@ -68,7 +71,22 @@ class ClassName implements Comparable<ClassName> {
 		}
 		
 		if (pattern.charAt(0) == '*') {
-			//TODO: implement
+			String newPattern = pattern.substring(1);
+			
+			for (int newWordIdx = wordIdx; newWordIdx < words.size(); newWordIdx++) {
+				for (int newOffset = offset; newOffset < words.get(newWordIdx).length(); newOffset++) {
+					System.err.println("newPattern: " + newPattern + "; newWordIdx: " + newWordIdx + "; newOffset: " + 
+							newOffset + "; words: " + words);
+					
+					if (this.matches(newPattern, newWordIdx, newOffset)) {
+						return true;
+					}
+				}
+				
+				offset = 0;
+			}
+			
+			return false;
 		}
 		
 		if (pattern.charAt(0) == word.charAt(offset)) {
