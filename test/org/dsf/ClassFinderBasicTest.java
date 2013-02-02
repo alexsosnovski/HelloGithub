@@ -70,6 +70,13 @@ public class ClassFinderBasicTest {
 	}
 	
 	@Test
+	public void basicSpecifyingCharsNoResult2() {
+		Collection<String> result = classFinder.findMatching("TeClasss");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(0, arr.length);
+	}
+	
+	@Test
 	public void basicTrailingWhitespace() {
 		Collection<String> result = classFinder.findMatching("TC ");
 		String[] arr = result.toArray(new String[result.size()]);
@@ -78,12 +85,37 @@ public class ClassFinderBasicTest {
 	}
 	
 	@Test
+	public void basicTrailingWhitespaceSpecifyingChars() {
+		Collection<String> result = classFinder.findMatching("TCla ");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(1, arr.length);
+		assertEquals("TestClass", arr[0]);
+	}
+	
+	@Test
 	public void basicWildcardInBetween() {
-		Collection<String> result = classFinder.findMatching("F*B");
+		Collection<String> result = classFinder.findMatching("M*P");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(2, arr.length);
-		assertEquals("FooBar", arr[0]);
-		assertEquals("FooBarBaz", arr[1]);
+		assertEquals("MyPrecious", arr[0]);
+		assertEquals("MySuperPrecious", arr[1]);
+	}
+	
+	@Test
+	public void basicWildcardInBetween2() {
+		Collection<String> result = classFinder.findMatching("M*SP");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(1, arr.length);
+		assertEquals("MySuperPrecious", arr[0]);
+	}
+	
+	@Test
+	public void basicWildcardInBetweenWithSpecifyingChars() {
+		Collection<String> result = classFinder.findMatching("M*P*o");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(2, arr.length);
+		assertEquals("MyPrecious", arr[0]);
+		assertEquals("MySuperPrecious", arr[1]);
 	}
 	
 	@Test
@@ -113,8 +145,38 @@ public class ClassFinderBasicTest {
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(3, arr.length);
 		assertEquals("MyClass", arr[0]);
-		assertEquals("MyClassa", arr[1]);
-		assertEquals("MyClass2", arr[2]);
+		assertEquals("MyClass2", arr[1]);
+		assertEquals("MyClassa", arr[2]);	
+	}
+	
+	@Test
+	public void lowercaseFirstChar() {
+		Collection<String> result = classFinder.findMatching("kC");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(1, arr.length);
+		assertEquals("kneeCop", arr[0]);
+	}
+	
+	@Test
+	public void lowercaseFirstCharWithSpecifyingChar() {
+		Collection<String> result = classFinder.findMatching("knC");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(1, arr.length);
+		assertEquals("kneeCop", arr[0]);
+	}
+	
+	@Test
+	public void lowercaseFirstCharNoResult() {
+		Collection<String> result = classFinder.findMatching("fB");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(0, arr.length);
+	}
+	
+	@Test
+	public void lowercaseFirstCharWithSpecifyingCharNoResult() {
+		Collection<String> result = classFinder.findMatching("kCr");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(0, arr.length);
 	}
 	
 	@Ignore

@@ -4,3 +4,8 @@ foo.bar.TestClassThird
 
 foo.bar.FooBar
 foo.bar.FooBarBaz
+
+MyPrecious
+MySuperPrecious
+
+kneeCop
