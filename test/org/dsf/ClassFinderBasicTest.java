@@ -98,7 +98,7 @@ public class ClassFinderBasicTest {
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(2, arr.length);
 		assertEquals("FooBar", arr[0]);
-		assertEquals("FooBarBaz", arr[0]);
+		assertEquals("FooBarBaz", arr[1]);
 	}
 	
 	@Test
@@ -107,7 +107,7 @@ public class ClassFinderBasicTest {
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(2, arr.length);
 		assertEquals("FooBar", arr[0]);
-		assertEquals("FooBarBaz", arr[0]);
+		assertEquals("FooBarBaz", arr[1]);
 	}
 	
 	@Test
@@ -204,41 +204,6 @@ public class ClassFinderBasicTest {
 		Collection<String> result = classFinder.findMatching("kCr");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(0, arr.length);
-	}
-	
-	@Ignore
-	@Test
-	public void advancedTrailingWhitespaceNoResult() {
-		Collection<String> result = classFinder.findMatching("TCl ");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(0, arr.length);
-	}
-	
-	@Ignore
-	@Test
-	public void advancedLowercaseChars() {
-		Collection<String> result = classFinder.findMatching("tct");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(1, arr.length);
-		assertEquals("TestClassThird", arr[0]);
-	}
-	
-	@Ignore
-	@Test
-	public void advancedLowercaseCharInBetween() {
-		Collection<String> result = classFinder.findMatching("TcT");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(1, arr.length);
-		assertEquals("TestClassThird", arr[0]);
-	}
-	
-	@Ignore
-	@Test
-	public void advancedLowercaseCharsNoResult() {
-		Collection<String> result = classFinder.findMatching("tct ");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(1, arr.length);
-		assertEquals("TestClassThird", arr[0]);
 	}
 	
 	@Before
