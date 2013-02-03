@@ -73,12 +73,12 @@ public class ClassFinder {
 		
 		return result;
 	}
-	
+
 	/** This method is intended for unit tests */
 	protected ClassName[] getClasses() {
 		return classes.toArray(new ClassName[classes.size()]);
 	}
-	
+
 	private void createClassName(String name) {
 		if (name.length() == 0) {
 			return;
