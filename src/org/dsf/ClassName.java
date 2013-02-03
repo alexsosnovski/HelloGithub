@@ -24,26 +24,12 @@ class ClassName implements Comparable<ClassName> {
 	}
 	
 	public boolean matches(String pattern) {
-		StringBuilder buff = new StringBuilder();
-		boolean wildcardCopied = false;
-		
-		for (char c : pattern.toCharArray()) {
-			if (c == '*') {
-				if (wildcardCopied) {
-					continue;
-				} else {
-					buff.append(c);
-					wildcardCopied = true;
-				}
-			} else {
-				wildcardCopied = false;
-			}
-		}
+		pattern = removeDuplicateWildcards(pattern);
 		
 		return this.matches(pattern, 0, 0);
 	}
 	
-	protected boolean matches(String pattern, int wordIdx, int offset) {
+	private boolean matches(String pattern, int wordIdx, int offset) {
 		if (wordIdx >= words.size()) { //if class needs to have more words to match
 			return false;
 		}
@@ -118,11 +104,33 @@ class ClassName implements Comparable<ClassName> {
 			return false;
 		}
 	}
+	
+	protected static String removeDuplicateWildcards(String pattern) {
+		StringBuilder buff = new StringBuilder();
+		boolean wildcardCopied = false;
+		
+		for (char c : pattern.toCharArray()) {
+			if (c == '*') {
+				if (wildcardCopied) {
+					continue;
+				} else {
+					buff.append(c);
+					wildcardCopied = true;
+				}
+			} else {
+				buff.append(c);
+				wildcardCopied = false;
+			}
+		}
+		
+		pattern = buff.toString();
+		return pattern;
+	}
 
-	private boolean isLastWord(int wordIdx) {
+	protected boolean isLastWord(int wordIdx) {
 		return wordIdx == words.size() - 1;
 	}
-	
+
 	@Override
 	public String toString() {
 		return className;
@@ -148,7 +156,7 @@ class ClassName implements Comparable<ClassName> {
 	}
 
 	/** This method is intended for unit tests */
-	protected String[] getWordsArr() {
+	protected String[] getWords() {
 		return words.toArray(new String[words.size()]);
 	}
 }

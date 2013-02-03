@@ -17,63 +17,63 @@ public class ClassNameTest {
 	public void testDefaultPackageSingleWordClass() {
 		ClassName className = new ClassName("Test");
 		assertEquals("Test", className.toString());
-		assertEquals(1, className.getWordsArr().length);
-		assertEquals("Test", className.getWordsArr()[0]);
+		assertEquals(1, className.getWords().length);
+		assertEquals("Test", className.getWords()[0]);
 	}
 	
 	@Test
 	public void testDefaultPackageMultiWordClass() {
 		ClassName className = new ClassName("MyTest");
 		assertEquals("MyTest", className.toString());
-		assertEquals(2, className.getWordsArr().length);
-		assertEquals("My", className.getWordsArr()[0]);
-		assertEquals("Test", className.getWordsArr()[1]);
+		assertEquals(2, className.getWords().length);
+		assertEquals("My", className.getWords()[0]);
+		assertEquals("Test", className.getWords()[1]);
 	}
 	
 	@Test
 	public void testMultiWordClass() {
 		ClassName className = new ClassName("foo.bar.MyTest");
 		assertEquals("MyTest", className.toString());
-		assertEquals(2, className.getWordsArr().length);
-		assertEquals("My", className.getWordsArr()[0]);
-		assertEquals("Test", className.getWordsArr()[1]);
+		assertEquals(2, className.getWords().length);
+		assertEquals("My", className.getWords()[0]);
+		assertEquals("Test", className.getWords()[1]);
 	}
 	
 	@Test
 	public void testNestedClassName() {
 		ClassName className = new ClassName("foo.bar.My$Test");
 		assertEquals("My$Test", className.toString());
-		assertEquals(2, className.getWordsArr().length);
-		assertEquals("My$", className.getWordsArr()[0]);
-		assertEquals("Test", className.getWordsArr()[1]);
+		assertEquals(2, className.getWords().length);
+		assertEquals("My$", className.getWords()[0]);
+		assertEquals("Test", className.getWords()[1]);
 	}
 	
 	@Test
 	public void testLowercaseFirstChar() {
 		ClassName className = new ClassName("foo.bar.myTest");
 		assertEquals("myTest", className.toString());
-		assertEquals(2, className.getWordsArr().length);
-		assertEquals("my", className.getWordsArr()[0]);
-		assertEquals("Test", className.getWordsArr()[1]);
+		assertEquals(2, className.getWords().length);
+		assertEquals("my", className.getWords()[0]);
+		assertEquals("Test", className.getWords()[1]);
 	}
 	
 	@Test
 	public void testProxyClassName() {
 		ClassName className = new ClassName("foo.bar.$Proxy1");
 		assertEquals("$Proxy1", className.toString());
-		assertEquals(2, className.getWordsArr().length);
-		assertEquals("$", className.getWordsArr()[0]);
-		assertEquals("Proxy1", className.getWordsArr()[1]);
+		assertEquals(2, className.getWords().length);
+		assertEquals("$", className.getWords()[0]);
+		assertEquals("Proxy1", className.getWords()[1]);
 	}
 	
 	@Test
 	public void testNonAsciiChars() {
 		ClassName className = new ClassName("моя.прелесссть.МойÜberКласс");
 		assertEquals("МойÜberКласс", className.toString());
-		assertEquals(3, className.getWordsArr().length);
-		assertEquals("Мой", className.getWordsArr()[0]);
-		assertEquals("Über", className.getWordsArr()[1]);
-		assertEquals("Класс", className.getWordsArr()[2]);
+		assertEquals(3, className.getWords().length);
+		assertEquals("Мой", className.getWords()[0]);
+		assertEquals("Über", className.getWords()[1]);
+		assertEquals("Класс", className.getWords()[2]);
 	}
 	
 	@Test
@@ -106,5 +106,23 @@ public class ClassNameTest {
 		assertEquals(0, className1.compareTo(className2));
 		assertTrue(className1.compareTo(className3) < 0);
 		assertTrue(className3.compareTo(className2) > 0);
+	}
+	
+	@Test
+	public void testRemoveDuplicateWildcards() {
+		assertEquals("*", ClassName.removeDuplicateWildcards("****"));
+		assertEquals("*A*B*", ClassName.removeDuplicateWildcards("**A**B**"));
+		assertEquals("*A*B*", ClassName.removeDuplicateWildcards("*A*B*"));
+	}
+	
+	@Test
+	public void testIsLastWord() {
+		ClassName className = new ClassName("MyTestClass");
+		assertEquals(3, className.getWords().length);
+		assertFalse(className.isLastWord(0));
+		assertFalse(className.isLastWord(1));
+		assertTrue(className.isLastWord(2));
+		assertFalse(className.isLastWord(-1));
+		assertFalse(className.isLastWord(3));
 	}
 }

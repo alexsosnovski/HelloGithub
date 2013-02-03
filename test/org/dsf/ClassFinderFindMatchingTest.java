@@ -4,9 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Collection;
 
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -14,26 +12,32 @@ import org.junit.runners.JUnit4;
 import static org.junit.Assert.*;
 
 @RunWith(JUnit4.class)
-public class ClassFinderBasicTest {
+public class ClassFinderFindMatchingTest {
 	final String encoding = ClassFinder.SUPPORTED_ENCODING;
 	
-	private InputStream testStream;
 	private ClassFinder classFinder;
 	
 	@Test
-	public void basicEmptyPattern() {
+	public void emptyPattern() {
 		Collection<String> result = classFinder.findMatching("");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(0, arr.length);
 	}
 	
+	@Test
+	public void whitespacePattern() {
+		Collection<String> result = classFinder.findMatching(" ");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(0, arr.length);
+	}
+	
 	@Test(expected = IllegalArgumentException.class)
-	public void basicNullPattern() {
+	public void nullPattern() {
 		classFinder.findMatching(null);
 	}
 	
 	@Test
-	public void basicOneCapitalChar() {
+	public void oneCapitalChar() {
 		Collection<String> result = classFinder.findMatching("T");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(3, arr.length);
@@ -43,7 +47,7 @@ public class ClassFinderBasicTest {
 	}
 	
 	@Test
-	public void basicTwoCapitalChars() {
+	public void twoCapitalChars() {
 		Collection<String> result = classFinder.findMatching("TC");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(3, arr.length);
@@ -53,7 +57,7 @@ public class ClassFinderBasicTest {
 	}
 	
 	@Test
-	public void basicSpecifyingChars() {
+	public void specifyingChars() {
 		Collection<String> result = classFinder.findMatching("TeCla");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(3, arr.length);
@@ -63,21 +67,21 @@ public class ClassFinderBasicTest {
 	}
 	
 	@Test
-	public void basicSpecifyingCharsNoResult() {
+	public void specifyingCharsNoMatch() {
 		Collection<String> result = classFinder.findMatching("TeCzz");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(0, arr.length);
 	}
 	
 	@Test
-	public void basicSpecifyingCharsNoResult2() {
+	public void tooManySpecifyingCharsNoMatch() {
 		Collection<String> result = classFinder.findMatching("TeClasss");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(0, arr.length);
 	}
 	
 	@Test
-	public void basicTrailingWhitespace() {
+	public void trailingWhitespace() {
 		Collection<String> result = classFinder.findMatching("TC ");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(1, arr.length);
@@ -85,7 +89,15 @@ public class ClassFinderBasicTest {
 	}
 	
 	@Test
-	public void basicTrailingWhitespaceSpecifyingChars() {
+	public void multipleTrailingWhitespace() {
+		Collection<String> result = classFinder.findMatching("TC   ");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(1, arr.length);
+		assertEquals("TestClass", arr[0]);
+	}
+	
+	@Test
+	public void trailingWhitespaceSpecifyingChars() {
 		Collection<String> result = classFinder.findMatching("TCla ");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(1, arr.length);
@@ -93,7 +105,15 @@ public class ClassFinderBasicTest {
 	}
 	
 	@Test
-	public void basicLeadingWildcard() {
+	public void trailingMiddleWhitespace() {
+		Collection<String> result = classFinder.findMatching("TC BUGA");
+		String[] arr = result.toArray(new String[result.size()]);
+		assertEquals(1, arr.length);
+		assertEquals("TestClass", arr[0]);
+	}
+	
+	@Test
+	public void leadingWildcard() {
 		Collection<String> result = classFinder.findMatching("*B");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(2, arr.length);
@@ -111,7 +131,7 @@ public class ClassFinderBasicTest {
 	}
 	
 	@Test
-	public void basicTrailingWildcard() {
+	public void trailingWildcard() {
 		Collection<String> result = classFinder.findMatching("TC*");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(3, arr.length);
@@ -131,24 +151,21 @@ public class ClassFinderBasicTest {
 	}
 	
 	@Test
-	public void basicWildcardInBetween() {
+	public void middleWildcard() {
 		Collection<String> result = classFinder.findMatching("M*P");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(2, arr.length);
 		assertEquals("MyPrecious", arr[0]);
 		assertEquals("MySuperPrecious", arr[1]);
-	}
-	
-	@Test
-	public void basicWildcardInBetween2() {
-		Collection<String> result = classFinder.findMatching("M*SP");
-		String[] arr = result.toArray(new String[result.size()]);
+		
+		result = classFinder.findMatching("M*SP");
+		arr = result.toArray(new String[result.size()]);
 		assertEquals(1, arr.length);
 		assertEquals("MySuperPrecious", arr[0]);
 	}
 	
 	@Test
-	public void basicWildcardInBetweenWithSpecifyingChars() {
+	public void middleWildcardSpecifyingChars() {
 		Collection<String> result = classFinder.findMatching("M*P*o");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(2, arr.length);
@@ -157,7 +174,7 @@ public class ClassFinderBasicTest {
 	}
 	
 	@Test
-	public void basicMultipleWildcardInBetween() {
+	public void multipleMiddleWildcard() {
 		Collection<String> result = classFinder.findMatching("M*****SP");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(1, arr.length);
@@ -165,7 +182,7 @@ public class ClassFinderBasicTest {
 	}
 	
 	@Test
-	public void testOrdering() throws Exception {
+	public void ordering() throws Exception {
 		InputStream in = new ByteArrayInputStream("zy.MyClass\nmy.MyClass2\nmy.MyClassa".getBytes(encoding));
 		ClassFinder finder = new ClassFinder(in);
 		Collection<String> result = finder.findMatching("MC");
@@ -193,29 +210,23 @@ public class ClassFinderBasicTest {
 	}
 	
 	@Test
-	public void lowercaseFirstCharNoResult() {
+	public void lowercaseFirstCharNoMatch() {
 		Collection<String> result = classFinder.findMatching("fB");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(0, arr.length);
 	}
 	
 	@Test
-	public void lowercaseFirstCharWithSpecifyingCharNoResult() {
+	public void lowercaseFirstCharWithSpecifyingCharNoMatch() {
 		Collection<String> result = classFinder.findMatching("kCr");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(0, arr.length);
 	}
 	
 	@Before
-	public void setUp() {
-		testStream = this.getClass().getClassLoader().getResourceAsStream("classNames1.txt");
-		classFinder = new ClassFinder(testStream);
-	}
-	
-	@After
-	public void tearDown() throws Exception {
-		if (testStream != null) {
-			testStream.close();
-		}
+	public void setUp() throws Exception {
+		try (InputStream testStream = this.getClass().getClassLoader().getResourceAsStream("classNames1.txt")) {	
+			classFinder = new ClassFinder(testStream);	
+		} 
 	}
 }
