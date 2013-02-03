@@ -48,14 +48,6 @@ class ClassName {
 			return true;
 		}
 		
-		//TODO: it's just for tests, remove later
-		/*if (Character.isUpperCase(pattern.charAt(0))) {
-			if (offset > 0) {
-				System.err.println("Offset > 0!!! Pattern: " + pattern + "; wordIdx: " + wordIdx + 
-						"; offset: " + offset + "; words: " + words);
-			}
-		}*/
-		
 		if (pattern.charAt(0) == ' ') {
 			return isLastWord(wordIdx);
 		}
@@ -91,17 +83,10 @@ class ClassName {
 		String newPattern = pattern.substring(1);
 		
 		for (int newWordIdx = wordIdx; newWordIdx < words.size(); newWordIdx++) {
-			int maxOffset = 0;
-			
-			if (!Character.isUpperCase(newPattern.charAt(0))) {
-				//offset = 0;
-				maxOffset = words.get(newWordIdx).length() - 1;
-			}
+			int maxOffset = (Character.isUpperCase(newPattern.charAt(0))) 
+					? 0 : words.get(newWordIdx).length() - 1;
 			
 			for (int newOffset = offset; newOffset <= maxOffset; newOffset++) {
-				//System.err.println("newPattern: " + newPattern + "; newWordIdx: " + newWordIdx + "; newOffset: " + 
-				//		newOffset + "; words: " + words);
-				
 				if (matches(newPattern, newWordIdx, newOffset)) {
 					return true;
 				}

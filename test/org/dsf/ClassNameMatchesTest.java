@@ -122,6 +122,7 @@ public class ClassNameMatchesTest {
 		assertFalse(new ClassName("MyPrecious").matches("M*P*z"));
 		assertTrue(new ClassName("MyPrecious").matches("M*P*o"));
 		assertTrue(new ClassName("MySuperPrecious").matches("M*P*o"));
+		assertTrue(new ClassName("MyPrecious").matches("M*Pre*ou"));
 	}
 	
 	@Test
