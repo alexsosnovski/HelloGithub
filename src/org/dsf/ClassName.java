@@ -24,6 +24,10 @@ class ClassName {
 	}
 	
 	public boolean matches(String pattern) {
+		if (pattern == null || pattern.trim().length() == 0) {
+			return false;
+		}
+		
 		pattern = removeDuplicateWildcards(pattern);
 		
 		return matches(pattern, 0, 0);

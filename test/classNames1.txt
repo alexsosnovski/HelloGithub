@@ -7,7 +7,3 @@ foo.bar.FooBarBaz
 
 MyPrecious
 MySuperPrecious
-
-kneeCop
-
-Zooma

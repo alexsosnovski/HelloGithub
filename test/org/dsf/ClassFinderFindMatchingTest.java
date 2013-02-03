@@ -74,13 +74,6 @@ public class ClassFinderFindMatchingTest {
 	}
 	
 	@Test
-	public void tooManySpecifyingCharsNoMatch() {
-		Collection<String> result = classFinder.findMatching("TeClasss");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(0, arr.length);
-	}
-	
-	@Test
 	public void trailingWhitespace() {
 		Collection<String> result = classFinder.findMatching("TC ");
 		String[] arr = result.toArray(new String[result.size()]);
@@ -89,41 +82,8 @@ public class ClassFinderFindMatchingTest {
 	}
 	
 	@Test
-	public void multipleTrailingWhitespace() {
-		Collection<String> result = classFinder.findMatching("TC   ");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(1, arr.length);
-		assertEquals("TestClass", arr[0]);
-	}
-	
-	@Test
-	public void trailingWhitespaceSpecifyingChars() {
-		Collection<String> result = classFinder.findMatching("TCla ");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(1, arr.length);
-		assertEquals("TestClass", arr[0]);
-	}
-	
-	@Test
-	public void trailingMiddleWhitespace() {
-		Collection<String> result = classFinder.findMatching("TC BUGA");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(1, arr.length);
-		assertEquals("TestClass", arr[0]);
-	}
-	
-	@Test
 	public void leadingWildcard() {
 		Collection<String> result = classFinder.findMatching("*B");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(2, arr.length);
-		assertEquals("FooBar", arr[0]);
-		assertEquals("FooBarBaz", arr[1]);
-	}
-	
-	@Test
-	public void multipleLeadingWildcard() {
-		Collection<String> result = classFinder.findMatching("***B");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(2, arr.length);
 		assertEquals("FooBar", arr[0]);
@@ -141,27 +101,12 @@ public class ClassFinderFindMatchingTest {
 	}
 	
 	@Test
-	public void multipleTrailingWildcard() {
-		Collection<String> result = classFinder.findMatching("TC***");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(3, arr.length);
-		assertEquals("TestClass", arr[0]);
-		assertEquals("TestClassSecond", arr[1]);
-		assertEquals("TestClassThird", arr[2]);
-	}
-	
-	@Test
 	public void middleWildcard() {
 		Collection<String> result = classFinder.findMatching("M*P");
 		String[] arr = result.toArray(new String[result.size()]);
 		assertEquals(2, arr.length);
 		assertEquals("MyPrecious", arr[0]);
 		assertEquals("MySuperPrecious", arr[1]);
-		
-		result = classFinder.findMatching("M*SP");
-		arr = result.toArray(new String[result.size()]);
-		assertEquals(1, arr.length);
-		assertEquals("MySuperPrecious", arr[0]);
 	}
 	
 	@Test
@@ -174,14 +119,6 @@ public class ClassFinderFindMatchingTest {
 	}
 	
 	@Test
-	public void multipleMiddleWildcard() {
-		Collection<String> result = classFinder.findMatching("M*****SP");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(1, arr.length);
-		assertEquals("MySuperPrecious", arr[0]);
-	}
-	
-	@Test
 	public void ordering() throws Exception {
 		InputStream in = new ByteArrayInputStream("zy.MyClass\nmy.MyClass2\nmy.MyClassa".getBytes(encoding));
 		ClassFinder finder = new ClassFinder(in);
@@ -191,36 +128,6 @@ public class ClassFinderFindMatchingTest {
 		assertEquals("MyClass", arr[0]);
 		assertEquals("MyClass2", arr[1]);
 		assertEquals("MyClassa", arr[2]);	
-	}
-	
-	@Test
-	public void lowercaseFirstChar() {
-		Collection<String> result = classFinder.findMatching("kC");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(1, arr.length);
-		assertEquals("kneeCop", arr[0]);
-	}
-	
-	@Test
-	public void lowercaseFirstCharWithSpecifyingChar() {
-		Collection<String> result = classFinder.findMatching("knC");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(1, arr.length);
-		assertEquals("kneeCop", arr[0]);
-	}
-	
-	@Test
-	public void lowercaseFirstCharNoMatch() {
-		Collection<String> result = classFinder.findMatching("fB");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(0, arr.length);
-	}
-	
-	@Test
-	public void lowercaseFirstCharWithSpecifyingCharNoMatch() {
-		Collection<String> result = classFinder.findMatching("kCr");
-		String[] arr = result.toArray(new String[result.size()]);
-		assertEquals(0, arr.length);
 	}
 	
 	@Before
