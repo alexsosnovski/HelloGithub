@@ -120,7 +120,7 @@ public class ClassFinderFindMatchingTest {
 	
 	@Test
 	public void ordering() throws Exception {
-		InputStream in = new ByteArrayInputStream("zy.MyClass\nmy.MyClass2\nmy.MyClassa".getBytes(encoding));
+		InputStream in = new ByteArrayInputStream("zy.MyClassa\nmy.MyClass\nmy.MyClass2".getBytes(encoding));
 		ClassFinder finder = new ClassFinder(in);
 		Collection<String> result = finder.findMatching("MC");
 		String[] arr = result.toArray(new String[result.size()]);
