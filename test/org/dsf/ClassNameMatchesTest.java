@@ -146,13 +146,13 @@ public class ClassNameMatchesTest {
 	
 	@Test
 	public void nonAsciiChars() {
-		assertFalse(new ClassName("моя.прелесссть.МойÜberКласс").matches("МÜK")); //K is ASCII here
-		assertTrue(new ClassName("моя.прелесссть.МойÜberКласс").matches("МÜК")); //K is cyrillic here
+		assertFalse(new ClassName("моя.прелесссть.МойÜberКласс").matches("МÜK")); //K is ASCII in the pattern
+		assertTrue(new ClassName("моя.прелесссть.МойÜberКласс").matches("МÜК")); //K is cyrillic in the pattern
 	}
 	
 	@Test
 	public void nonAlphabeticalCharsChars() {
-		assertFalse(new ClassName("my.test.$Proxy2_SomeClass").matches("$Proxy_SC")); //K is ASCII here
-		assertTrue(new ClassName("my.test.$Proxy2_SomeClass").matches("$Proxy2_SC")); //K is cyrillic here
+		assertFalse(new ClassName("my.test.$Proxy2_SomeClass").matches("$Proxy_SC"));
+		assertTrue(new ClassName("my.test.$Proxy2_SomeClass").matches("$Proxy2_SC"));
 	}
 }
