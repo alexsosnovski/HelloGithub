@@ -143,4 +143,16 @@ public class ClassNameMatchesTest {
 		assertFalse(new ClassName("testClass").matches("tsCa"));
 		assertTrue(new ClassName("testClass").matches("teCl"));
 	}
+	
+	@Test
+	public void nonAsciiChars() {
+		assertFalse(new ClassName("моя.прелесссть.МойÜberКласс").matches("МÜK")); //K is ASCII here
+		assertTrue(new ClassName("моя.прелесссть.МойÜberКласс").matches("МÜК")); //K is cyrillic here
+	}
+	
+	@Test
+	public void nonAlphabeticalCharsChars() {
+		assertFalse(new ClassName("my.test.$Proxy2_SomeClass").matches("$Proxy_SC")); //K is ASCII here
+		assertTrue(new ClassName("my.test.$Proxy2_SomeClass").matches("$Proxy2_SC")); //K is cyrillic here
+	}
 }
